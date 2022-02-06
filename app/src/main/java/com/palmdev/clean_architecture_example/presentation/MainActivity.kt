@@ -1,8 +1,10 @@
-package com.palmdev.clean_architecture_example
+package com.palmdev.clean_architecture_example.presentation
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.palmdev.clean_architecture_example.databinding.ActivityMainBinding
+import com.palmdev.domain.models.SaveUserNameParam
 import com.palmdev.domain.usecases.GetDataUseCase
 import com.palmdev.domain.usecases.SaveDataUseCase
 
@@ -11,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -21,12 +24,13 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnGetData.setOnClickListener {
             val data = getDataUseCase.execute()
-            // binding.tvUserData.text = data
+            binding.tvUserData.text = data.firstName + data.lastName
         }
 
         binding.btnSaveData.setOnClickListener {
             val data = binding.editText.text.toString()
-            // saveDataUseCase.execute(data)
+            val params = SaveUserNameParam(firstName = data)
+            saveDataUseCase.execute(params)
         }
     }
 }
