@@ -39,12 +39,19 @@
         android:text="Get user data" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/editTextFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
-        android:hint="Enter data" />
+        android:hint="First Name" />
+
+    <EditText
+        android:id="@+id/editTextLastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:hint="Last Name" />
 
     <Button
         android:id="@+id/btnSaveData"

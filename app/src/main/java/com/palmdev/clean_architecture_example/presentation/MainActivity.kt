@@ -28,8 +28,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.btnSaveData.setOnClickListener {
-            val data = binding.editText.text.toString()
-            val params = SaveUserNameParam(firstName = data)
+            val userFirstName = binding.editTextFirstName.text.toString()
+            val userLastName = binding.editTextLastName.text.toString()
+
+            val params = SaveUserNameParam(firstName = userFirstName, lastName = userLastName)
+
             saveDataUseCase.execute(params)
         }
     }
