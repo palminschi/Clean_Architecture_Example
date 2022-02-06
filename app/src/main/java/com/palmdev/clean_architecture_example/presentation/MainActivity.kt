@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.palmdev.clean_architecture_example.databinding.ActivityMainBinding
+import com.palmdev.data.repository.UserRepositoryImpl
 import com.palmdev.domain.models.SaveUserNameParam
 import com.palmdev.domain.usecases.GetDataUseCase
 import com.palmdev.domain.usecases.SaveDataUseCase
@@ -12,6 +13,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private val userRepository by lazy { UserRepositoryImpl(applicationContext) }
+    private val saveDataUseCase by lazy { SaveDataUseCase(userRepository) }
+    private val getDataUseCase by lazy { GetDataUseCase(userRepository) }
+
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +24,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val saveDataUseCase = SaveDataUseCase()
-        val getDataUseCase = GetDataUseCase()
 
         binding.btnGetData.setOnClickListener {
             val data = getDataUseCase.execute()
