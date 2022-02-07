@@ -1,28 +1,32 @@
 package com.palmdev.data.repository
 
-import android.content.Context
+import com.palmdev.data.storage.UserStorage
+import com.palmdev.data.storage.models.SaveUserNameParamData
+import com.palmdev.data.storage.models.UserNameData
 import com.palmdev.domain.models.SaveUserNameParam
 import com.palmdev.domain.models.UserName
 import com.palmdev.domain.repository.UserRepository
 
-private const val SHARED_PREFS_NAME = "SHARED_PREFS_NAME"
-private const val KEY_USER_FIRST_NAME = "KEY_USER_FIRST_NAME"
-private const val KEY_USER_LAST_NAME = "KEY_USER_LAST_NAME"
-private const val DEFAULT_NAME = "no data"
 
-class UserRepositoryImpl(context: Context) : UserRepository {
 
-    private val sharedPrefs = context.getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
+class UserRepositoryImpl(private val userStorage: UserStorage) : UserRepository {
 
     override fun saveUserName(saveUserNameParam: SaveUserNameParam) {
-        sharedPrefs.edit().putString(KEY_USER_FIRST_NAME, saveUserNameParam.firstName).apply()
-        sharedPrefs.edit().putString(KEY_USER_LAST_NAME, saveUserNameParam.lastName).apply()
+        val params = mapToStorage(saveUserNameParam)
+        userStorage.saveName(params)
     }
 
     override fun getUserName(): UserName {
-        val firstName = sharedPrefs.getString(KEY_USER_FIRST_NAME, DEFAULT_NAME) ?: DEFAULT_NAME
-        val lastName = sharedPrefs.getString(KEY_USER_LAST_NAME, DEFAULT_NAME) ?: DEFAULT_NAME
+        return mapToDomain(userStorage.getName())
+    }
 
-        return UserName(firstName = firstName, lastName = lastName)
+    private fun mapToDomain(userNameData: UserNameData) : UserName {
+        return UserName(firstName = userNameData.firstName, lastName = userNameData.lastName)
+    }
+
+    private fun mapToStorage(saveUserNameParam: SaveUserNameParam): SaveUserNameParamData{
+        return SaveUserNameParamData(
+            firstName = saveUserNameParam.firstName,
+            lastName = saveUserNameParam.lastName)
     }
 }
