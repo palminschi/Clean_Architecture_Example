@@ -15,10 +15,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val userRepository by lazy { UserRepositoryImpl(userStorage = SharedPrefsUserStorage(applicationContext)) }
-    private val saveDataUseCase by lazy { SaveDataUseCase(userRepository) }
-    private val getDataUseCase by lazy { GetDataUseCase(userRepository) }
-
     private lateinit var vm: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
